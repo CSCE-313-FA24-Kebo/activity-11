@@ -17,10 +17,9 @@ We compute this using a Riemann sum approximation, dividing the work among multi
 You can read about it here: https://dotink.co/posts/pi-by-riemann-sum.
 
 ## Task 1: Parallelizing the Initial Computation
-Location: main.cpp, Section 1
+### main.cpp - Section 1
 Your task is to parallelize the computation of individual terms using multiple threads. Each thread will compute a portion of the total sum.
 
-Requirements:
 1. Create a vector of threads (`std::vector<thread>`)
 2. Launch `NUM_THREADS` threads that use the `single_sum_thread` function
 3. Pass appropriate arguments to each thread:
@@ -35,10 +34,9 @@ Key Points:
 - The single_sum_thread function is already implemented for you.
 
 ## Task 2: Parallelizing the Final Summation
-Location: main.cpp, Section 2
+### main.cpp - Section 2
 Your task is to parallelize the final summation of results while ensuring **thread safety**.
 
-Requirements:
 1. Replace the serial summation code with a parallel implementation.
 2. Use the provided `pi_sum_thread` function.
 3. Implement proper synchronization in `pi_sum_thread` to prevent race conditions.
