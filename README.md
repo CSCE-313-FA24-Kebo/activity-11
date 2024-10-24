@@ -1,37 +1,66 @@
-# Exam 2.2.a: Performance optimization with threading
+# Parallel Pi Approximation using Threading
 
-This program approximates the value of pi using the Riemann sum method.
+In this activity, you will parallelize a program that approximates π (pi) using the Riemann sum method. The program splits the computation into two main sections that need to be optimized using multiple threads.
+
+## Learning Objectives
+- Implement parallel computing concepts using C++ threads
+- Understand and handle thread synchronization
+- Optimize performance through parallel execution
+- Practice working with shared resources in a multi-threaded environment
+
+## Algorithm Background
+The program approximates π using the Leibniz formula, which states that:
+$π/4 = 1 - 1/3 + 1/5 - 1/7 + ...$
+
+We compute this using a Riemann sum approximation, dividing the work among multiple threads for better performance.
 
 You can read about it here: https://dotink.co/posts/pi-by-riemann-sum.
 
-We provided the entire algorithm, and your goal is to parallelize the program to improve its performance.
+## Task 1: Parallelizing the Initial Computation
+Location: main.cpp, Section 1
+Your task is to parallelize the computation of individual terms using multiple threads. Each thread will compute a portion of the total sum.
 
-There are two sections of the code that you need to parallelize. The first one is the for loop that calculates the value of each square (see `single_sum_thread`). The second one is the for loop that calculates the sum of the squares (see `pi_sum_thread`). The second summation is the pi approximation.
+Requirements:
+1. Create a vector of threads (`std::vector<thread>`)
+2. Launch `NUM_THREADS` threads that use the `single_sum_thread` function
+3. Pass appropriate arguments to each thread:
+  - id: Thread identifier (0 to NUM_THREADS-1)
+  - nthreads: Total number of threads
+  - sum: Array to store partial results
+4. Join all threads with the main thread
 
-## main.cpp
-### Section 1
-You must create a vector of threads, call the thread constructor, and push back nthreads # of threads. Pass in the appropriate arguments to the thread function. Then, join the threads.
+Key Points:
+- The id parameter ensures each thread works on its designated portion of the computation.
+- All threads must complete (join) before moving to the next section.
+- The single_sum_thread function is already implemented for you.
 
-Hint: The single_num_thread has an id argument. This is so that each thread knows what section of the sum array it works on.
+## Task 2: Parallelizing the Final Summation
+Location: main.cpp, Section 2
+Your task is to parallelize the final summation of results while ensuring **thread safety**.
 
-### Section 2
-Your goal is to parallelize the code given (comment it out when you finish). Reference the `pi_sum_thread` and compare it to the serial code. We deliberately added a `sleep(1)` in both the serial code and the function to simulate a long-running function. Your goal is to make the output time of this section to be about 1 second, like the sample output.
+Requirements:
+1. Replace the serial summation code with a parallel implementation.
+2. Use the provided `pi_sum_thread` function.
+3. Implement proper synchronization in `pi_sum_thread` to prevent race conditions.
+4. Create and join threads similar to Task 1.
 
-Hint: You do not need to understand the algorithm. Think about parallelizing a loop. The `pi_sum_thread` is not thread-safe, so make sure to add the appropriate synchronization code to make it thread-safe. This also means that the shared variable(s) must be passed by reference, not by value.
+Key Points:
+The pi_sum_thread function includes a sleep(1) to simulate a long-running task.
+The target execution time for this section should be approximately 1 second.
+Critical sections should be kept as small as possible.
+Shared variables must be passed by reference.
 
-## Sample output
-For two threads, this is a sample output (Ignore the first two lines):
+## Expected Output
+For a configuration with two threads:
+
 ```
 Number of threads: 2
 Cache padding for coherency: 64 bytes
 ---
 Pi approximation: 3.141593
-Time to complete part 1: 3.355059 seconds
-Time to complete part 2: 1.000477 seconds
+Time to complete part 1: ~3.4 seconds
+Time to complete part 2: ~1.0 seconds
 ```
-- Your pi should be very close to 3.1415.
-- The time to complete part 1 should be around this time (or 1/2 of single thread performance)
-- The time to complete part 2, if parallelized correctly, should be close to 1 second.
 
 ## Notes
 1. Remember, you want the critical section to be as small as possible.
