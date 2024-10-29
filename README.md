@@ -66,3 +66,8 @@ Time to complete part 2: ~1.0 seconds
 1. You can complete part 1 and run it first without doing part 2.
 1. Your program will be manually tested for correctness with additional test cases.
 1. Your program should compile with no errors and warnings.
+
+## Submission
+Submit your files:
+- main.cpp
+- main.h
